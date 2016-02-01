@@ -1,13 +1,24 @@
 $(function(){
+	var $window = $(window);
+	var $body = $("body");
 	var $main = $("#main");
+	var $jumpImage = $("#jumpImage");
+	var $jumpImageS = $("#jumpImageS");
 	var $header_span = $("header span");
-	var imageSmall_col = new Array();
+	var $downSpan = $("#downBtn span");
+	var $upSpan = $("#upBtn span");
+	var kanban_list_url;//儲存目前所在看板的主題列表
+	var imageBig_col = new Array(); //蒐集原圖用的陣列
+	var imageSmall_col = new Array(); //蒐集縮圖用的陣列
 
 	$("#menu-icon").click(openMenuLeft);
 
 	$("#menu-open-layer, #menu-list li").click(openMenuLeft);
 
 	$("#menu-bottom-icon").click(openMenuBottom);
+	$("footer span, #main, #menu-icon").click(function(){
+		$("footer").addClass('menu-close');
+	});
 
 	$("#menu-list li[name]").click(readKanban);
 
@@ -15,20 +26,92 @@ $(function(){
 		click:readComments
 	},"a.noneA");//end on
 
-	function openMenuLeft(){
+	$main.on({
+		click:showImage
+	},"a.comm-img");//end on
+
+	$jumpImage.click(function(){
+		$jumpImage.fadeOut(500);
+		$body.css({"overflow":""});
+	});//end click
+
+	$("#showAllimg").on({
+		click: showAllImage
+	},"span.active");//end on
+
+	$jumpImageS.find("button").click(function(){
+		$jumpImageS.fadeOut(500);
+		$body.css({"overflow":""});
+	});//end click
+
+	$jumpImageS.on({
+		click:showImage
+	},"a");//end on
+
+	// 關於置頂置底按鈕有效與否
+    $window.scroll(function() {
+    	var BottomH = $("html").height() - $window.height(); //到達最底的高度
+    	if( $window.scrollTop() === BottomH ){ //當到達最底時
+    		$downSpan.removeClass("active");
+    	}else{ //不是最底時則
+    		$downSpan.addClass("active");
+    	}
+    	if( $window.scrollTop() !== 0 ){ //當不是在最頂時
+    		$upSpan.addClass("active");
+    	}else{
+    		$upSpan.removeClass("active");
+    	}
+    });//end scroll
+
+    //置頂與置底按鈕
+	$downSpan.click(function(){
+		var BottomH = $("html").height() - $window.height(); //到達最底的高度
+    	$("html, body").stop(true,true).animate({"scrollTop":BottomH}, 800);
+    });//end click
+    $upSpan.click(function(){
+    	$("html, body").stop(true,true).animate({"scrollTop":0}, 800);
+    });//end click
+
+    //主題列表按鈕
+    $("#kanbanList").on({
+    	click:readKanBanList
+    },"span.active");
+
+	function openMenuLeft(){ //開關MENU-LEFT
 		$("#menu-left").toggleClass('menu-close');
 		$("#menu-icon").toggleClass('menu-icon-X');
 		$("#menu-open-layer").toggleClass('hide');
 	}//end function
 
-	function openMenuBottom(){
+	function openMenuBottom(){ //開關MENU-BOTTOM
 		$("footer").toggleClass('menu-close');
 	}//end function
 
+	function showImage(){
+		event.preventDefault();//阻止點擊a的預設功能
+		var imgSrc = $(this).attr("href");
+		$jumpImage.children('img').attr("src",imgSrc).end().fadeIn(500);
+		$body.css({"overflow":"hidden"});
+	}//end function
+
+	function showAllImage(){
+		$jumpImageS_div = $jumpImageS.children('div');
+		$jumpImageS_div.text(""); //清空上次的瀏覽
+		var komicaHTML = "";
+		$.each(imageSmall_col, function(i, data){
+			komicaHTML += "<a href=\""+ imageBig_col[i] +"\">";
+			komicaHTML += "<img src=\""+ data +"\" alt=\"ERROR!\"/></a>";
+		})
+		$jumpImageS_div.append( komicaHTML );
+		$jumpImageS.fadeIn(500);
+		$body.css({"overflow":"hidden"});
+	}//end function
+
 	function readKanban(){
+		$("#showAllimg span").removeClass("active");
 		var kanban_url = $(this).attr("name");
 		var komicaHTML = "";
-		$main.text("");
+		$main.fadeOut(500);
 
 		$.get( kanban_url , function(data){
 			var data_res = $(data.responseText);
@@ -38,6 +121,9 @@ $(function(){
 
 			var kanban_title = $(data_res_title).find("h1").text();
 			$header_span.text(kanban_title); //改變header的文字
+
+			var listURL = $(data_res_title).find("[href*=threadlist]").attr("href");
+			kanban_list_url = kanban_url + listURL;//組合起來就是主題列表的網址；儲存起來
 
 			$(data_res_contents).find(".threadpost").each(function(i){
 				var $this = $(this);
@@ -71,7 +157,8 @@ $(function(){
 			// komicaHTML += "<button id=\"next-page\" class=\"btn btn-lg btn-block btn-priamry\" name=\""+ kanban_url + page +".htm\">下一頁</button>";
 
 		}).done(function(){
-			$main.append(komicaHTML);
+			$main.text("").append(komicaHTML).fadeIn(500);
+			$("#kanbanList span").addClass('active')
 		});//end get
 	}//end function readKanban
 
@@ -79,7 +166,9 @@ $(function(){
 		event.preventDefault();//阻止點擊a的預設功能
 		var comm_url = $(this).attr("href");
 		var komicaHTML = "";
-		$main.text("");
+
+		$main.fadeOut(500);	
+		imageBig_col.length=0;
 		imageSmall_col.length=0;
 
 		$.get( comm_url, function(data){
@@ -87,7 +176,6 @@ $(function(){
 			var data_res_form = data_res[12]; //發表文章表單的位置
 			var data_res_contents = data_res[14]; //主區塊
 
-			console.log(data_res_contents)
 			$(data_res_contents).find("#threads > div").each(function(i){
 				var $this = $(this);
 				
@@ -100,35 +188,38 @@ $(function(){
 					var id = $this.attr("id"); //發文數字ID
 					var imageSmall = $this.find("img").attr("src");//縮圖的網址
 					var imageBig = $this.find("img").parent("a").attr("href")//原圖的網址
-					imageSmall_col.push( imageSmall );//蒐集縮圖網址
-					var quote = $this.find(".quote").text(); //內文
+					var quote = $this.find(".quote").html(); //內文
 
 					komicaHTML += "<div class=\"row\">";
 					komicaHTML += "<div id=\""+ id +"\" class=\"col-sm-12 threadpostBox\">";
 					komicaHTML += "<p>"+ name +"</p>";
 					komicaHTML += "<p class=\"title\">【島民No. "+ id.replace("r","")+"】"+ comm_title +"</p>";
-					komicaHTML += "<a href=\""+ imageBig +"\" target=\"_blank\">"
-					komicaHTML += "<img src=\""+ imageSmall +"\" alt=\""+id+"的附圖\"/></a>"
-					komicaHTML += "<p class=\"quote\">"+ quote +"</p>"
+					if( imageBig !== undefined){
+						komicaHTML += "<a class=\"comm-img\" href=\""+ imageBig +"\" target=\"_blank\">";
+						komicaHTML += "<img src=\""+ imageSmall +"\" alt=\""+id+"的附圖\"/></a>";
+						imageBig_col.push( imageBig );//蒐集原圖網址
+						imageSmall_col.push( imageSmall );//蒐集縮圖網址
+					}
+					komicaHTML += "<p class=\"quote\">"+ quote +"</p>";
 					komicaHTML += "</div>";
 
 				}else{
 					var id = $this.attr("id"); //發文數字ID
 					var comm_title = $this.find("span.title").text();//標題
 					var name = $this.find("label").html();
-					console.log(name);
 					name = name.slice( name.indexOf("[") );//發文時間與亂數ID					
 					var imageSmall = $this.find("img").attr("src");//縮圖的網址
 					var imageBig = $this.find("img").parent("a").attr("href")//原圖的網址
-					imageSmall_col.push( imageSmall );//蒐集縮圖網址
 					var quote = $this.find(".quote").html(); //內文
 
 					komicaHTML += "<div id=\""+ id +"\" class=\"col-sm-10 replyBox\">";
 					komicaHTML += "<p>"+ name +"</p>";
 					komicaHTML += "<p class=\"title\">【島民No. "+ id.replace("r","")+"】"+ comm_title +"</p>";
 					if( imageBig !== undefined){
-						komicaHTML += "<a href=\""+ imageBig +"\" target=\"_blank\">"
-						komicaHTML += "<img src=\""+ imageSmall +"\" alt=\""+id+"的附圖\"/></a>"
+						komicaHTML += "<a class=\"comm-img\" href=\""+ imageBig +"\" target=\"_blank\">";
+						komicaHTML += "<img src=\""+ imageSmall +"\" alt=\""+id+"的附圖\"/></a>";
+						imageBig_col.push( imageBig );//蒐集原圖網址
+						imageSmall_col.push( imageSmall );//蒐集縮圖網址
 					}
 					komicaHTML += "<p class=\"quote\">"+ quote +"</p>"
 					komicaHTML += "</div>";
@@ -138,10 +229,80 @@ $(function(){
 			komicaHTML += "</div>";
 
 		}).done(function(){
-			$main.append(komicaHTML);
+			$main.text("").append(komicaHTML).fadeIn(500);
+			$("#showAllimg span").addClass("active");
 		});//end get
 
 	}//end function
+
+	function readKanBanList(){
+		$("#showAllimg span").removeClass("active");
+		var komicaHTML = "";
+		$main.fadeOut(500);
+
+		var page_of_num = 0;
+		var kanban_url = kanban_list_url.slice(0, kanban_list_url.indexOf("pixmicat"));
+
+		$.get( kanban_list_url, {"page":page_of_num}, function(data){
+
+			komicaHTML += getList(data, kanban_url);
+			//將資料以及網址丟給function處理，接收回傳的資料
+
+		}).done(function(){
+
+			page_of_num++;//查找下一頁	
+			$.get( kanban_list_url, {"page":page_of_num}, function(data){
+
+				komicaHTML += getList(data, kanban_url);
+
+			}).done(function(){
+				$main.text("").append(komicaHTML).fadeIn(500);
+			})//end inner get
+
+		});//end get
+	}//end function
+
+	function getList(data, kanban_url){
+		var komicaHTML = "";
+		var data_res = $(data.responseText)
+		var data_res_title = data_res[10]; //標頭的位置，含有標題；文章列表等
+		var data_res_contents = data_res[12];//主區塊
+
+		var kanban_title = $(data_res_title).find("h1").text();
+		$header_span.text(kanban_title); //改變header的文字
+
+		var temp;
+		$(data_res_contents).find("table:eq(0) tr").each(function(i){
+			var $this = $(this);
+			if(i){//跳過第一個 因為那只是表格標題
+				var this_td = $this.find("td");
+				var id = $(this_td[1]).text(); //取得數字ID
+				var title = $(this_td[2]).find("a").text(); //取得標題
+				var num_of_comm = $(this_td[4]).text() //取得目前回應數
+				var time_and_id = $(this_td[5]).text() //取得發文時間與亂數id
+				var comments_url = kanban_url + "pixmicat.php?res=" + id; //結合起來就是討論串的連結
+
+				if( i%4 === 1 ){
+					komicaHTML += "<div class=\"row\">";
+				}
+				komicaHTML += "<div class=\"col-sm-3\">";
+				komicaHTML += "<a class=\"noneA\" href='"+ comments_url +"'>";
+				komicaHTML += "<div class=\"commBox\">";
+				komicaHTML += "<p>"+ time_and_id +"</p>";
+				komicaHTML += "<p class=\"title\">"+ title + "</p>";
+				komicaHTML += "<hr/>回應數："+ num_of_comm;
+				komicaHTML += "</div></a></div>"
+				if( i%4 === 0 ){
+					komicaHTML += "</div>";
+				}
+			}//end if
+			temp = i;
+		})//end each
+		if(temp%4 !==0 ){
+			komicaHTML += "</div>";
+		}
+		return komicaHTML;		
+	}
 
 });//end ready
 

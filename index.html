@@ -32,9 +32,11 @@
 				<ul>
 					<li name="http://2cat.or.tl/~tedc21thc/new/">新番捏他</li>
 					<li name="http://2cat.or.tl/~tedc21thc/live/">新番實況</li>
-					<!-- <li name="http://2cat.twbbs.org/~tedc21thc/anime/rss.xml">動畫</li>
-					<li id="showImg" ><hr/><span class="glyphicon glyphicon-picture"></span><br/>顯示本串全部圖片</li>
-					<li id="change"><hr/><span class="glyphicon glyphicon-repeat"></span> 更換配色風格</li> -->
+					<!-- <li name="http://2cat.or.tl/~touhonoob/21d/">短片</li> -->
+					<li >阿</li>
+					<li >黑</li>
+					<li >顏</li>
+					<!-- <li id="change"><hr/><span class="glyphicon glyphicon-repeat"></span> 更換配色風格</li> -->
 				</ul>
 			</div>
 			<div id="menu-icon">
@@ -46,6 +48,17 @@
 		<!-- 開啟MENU時覆蓋主區塊用的；hide為bootstrap提供的display:none -->
 
 		<div id="main" class="container">
+		</div>
+
+		<div id="jumpImage"> <!-- 點圖片會彈出的區塊 -->
+			<img src=" " class="img-responsive center-block" alt="jump!"/>
+		</div>
+
+		<div id="jumpImageS"><!-- 點顯示全部圖片會彈出的區塊 -->
+			<button class="btn btn-block btn-danger btn-lg" >
+				<span class="glyphicon glyphicon-remove"></span> 關閉
+			</button>
+			<div></div>
 		</div>
 
 		<footer class="menu-close">
@@ -66,9 +79,13 @@
 				<p>置底</p>
 			</div>
 			<ul>
+				<li id="kanbanList">
+					<span  class="glyphicon glyphicon-list-alt"></span>
+					<span>主題列表</span>
+				</li>
 				<li>
-					<span class="glyphicon glyphicon-list-alt"></span>
-					主題列表
+					<span class="glyphicon glyphicon-pencil"></span>
+					<span>PO文</span>
 				</li>
 			</ul>
 		</footer>
