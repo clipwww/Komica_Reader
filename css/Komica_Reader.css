@@ -85,6 +85,9 @@ footer ul{
 footer li{
 	margin-top:10px; 
 }
+#homepage{
+	color:maroon;
+}
 #menu-left{
 	position: fixed;
 	left:0px;
