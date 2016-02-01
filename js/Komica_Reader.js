@@ -31,7 +31,9 @@ $(function(){
 	},"a.comm-img");//end on
 
 	$jumpImage.click(function(){
-		$jumpImage.fadeOut(500);
+		$jumpImage.fadeOut(500, function(){
+			$jumpImage.find("img").attr("src","");
+		})
 		$body.css({"overflow":""});
 	});//end click
 
