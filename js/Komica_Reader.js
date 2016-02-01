@@ -79,6 +79,12 @@ $(function(){
     	click:readKanBanList
     },"span.active");
 
+    //事件:上一頁
+    // $(window).bind("popstate", function (){
+    // 	$main.text("").append( history.state );
+    // });
+
+
 	function openMenuLeft(){ //開關MENU-LEFT
 		$("#menu-left").toggleClass('menu-close');
 		$("#menu-icon").toggleClass('menu-icon-X');
@@ -114,6 +120,7 @@ $(function(){
 		var kanban_url = $(this).attr("name");
 		var komicaHTML = "";
 		$main.fadeOut(500);
+		
 
 		$.get( kanban_url , function(data){
 			var data_res = $(data.responseText);
@@ -159,6 +166,7 @@ $(function(){
 			// komicaHTML += "<button id=\"next-page\" class=\"btn btn-lg btn-block btn-priamry\" name=\""+ kanban_url + page +".htm\">下一頁</button>";
 
 		}).done(function(){
+			//log_by_read( komicaHTML );
 			$main.text("").append(komicaHTML).fadeIn(500);
 			$("#kanbanList span").addClass('active')
 		});//end get
@@ -231,6 +239,7 @@ $(function(){
 			komicaHTML += "</div>";
 
 		}).done(function(){
+			//log_by_read( komicaHTML );
 			$main.text("").append(komicaHTML).fadeIn(500);
 			$("#showAllimg span").addClass("active");
 		});//end get
@@ -258,6 +267,7 @@ $(function(){
 				komicaHTML += getList(data, kanban_url);
 
 			}).done(function(){
+				//log_by_read( komicaHTML );
 				$main.text("").append(komicaHTML).fadeIn(500);
 			})//end inner get
 
@@ -304,8 +314,13 @@ $(function(){
 			komicaHTML += "</div>";
 		}
 		return komicaHTML;		
-	}
+	}//end function
 
+	// function log_by_read(data){
+	// 	 history.pushState(data, "", "index.html");
+	// 	 //將資料保存在瀏覽器內部，供上一頁使用；三個參數: 保存的state、這筆紀錄的title、修改網址
+	// }
+	//log_by_read( $main.html() );
 });//end ready
 
 function replyhl(id){
