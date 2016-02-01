@@ -11,7 +11,7 @@ header{
 	top:0;
 	height:50px;
 	width: 100vw;
-	font-size: 2em;
+	font-size: 2.3vw;
 	font-weight: bold;
 	text-align: center;
 	text-shadow:2px 2px 0 black;
@@ -20,6 +20,63 @@ header{
 	background-color: maroon;
 	z-index: 1;
 }
+footer{
+	position: fixed;
+	bottom:0px;
+	height: 250px;
+	width: 100vw;
+	padding: 10px 20px 5px 20px;
+	color: black;
+	text-align: center;
+	background-color: rgba(160,160,160,0.9);
+	z-index: 1;
+	-moz-transition-property: bottom;
+	-o-transition-property: bottom;
+	-webkit-transition-property: bottom;
+	transition-property: bottom;
+	/*當css bottom改變時會有過渡（一個狀態逐漸轉為另一個狀態）效果*/
+	-moz-transition-duration: 0.5s;
+	-o-transition-duration: 0.5s;
+	-webkit-transition-duration: 0.5s;
+	transition-duration: 0.5s;
+	/*過渡效果所持續的時間*/
+	-moz-transition-timing-function: ease;
+	-o-transition-timing-function: ease;
+	-webkit-transition-timing-function: ease;
+	transition-timing-function: ease;
+	/*過渡效果的動畫；ease是以低速開始->加速->結束前減速*/
+}
+footer.menu-close{
+	bottom:-200px;
+}
+footer i, footer span, footer p{
+	text-shadow:1px 1px 0 white;
+}
+footer i{
+	font-size: 3em;
+	cursor: pointer;
+}
+footer div{
+	display: inline-block;
+	width: 20vw;
+	text-align: center;
+	opacity: 0.1;
+}
+footer div.active{
+	cursor: pointer;
+	opacity: 1;
+}
+footer span{
+	font-size: 2.5em;
+}
+footer p{
+	font-size: 1em;
+	font-weight: bold;
+}
+footer ul{
+	text-align: left;
+}
+
 #menu-left{
 	position: fixed;
 	left:0px;
@@ -27,11 +84,11 @@ header{
 	height: 100vh;
 	overflow: auto;
 	z-index: 3;
-	-moz-transition-property: all;
-	-o-transition-property: all;
-	-webkit-transition-property: all;
-	transition-property: all;
-	/*當css width改變時會有過渡（一個狀態逐漸轉為另一個狀態）效果*/
+	-moz-transition-property: left;
+	-o-transition-property: left;
+	-webkit-transition-property: left;
+	transition-property: left;
+	/*當css left改變時會有過渡（一個狀態逐漸轉為另一個狀態）效果*/
 	-moz-transition-duration: 0.5s;
 	-o-transition-duration: 0.5s;
 	-webkit-transition-duration: 0.5s;
@@ -73,10 +130,10 @@ header{
 	-webkit-transition-property: all;
 	transition-property: all;
 	/*當css width改變時會有過渡（一個狀態逐漸轉為另一個狀態）效果*/
-	-moz-transition-duration: 1s;
-	-o-transition-duration: 1s;
-	-webkit-transition-duration: 1s;
-	transition-duration: 1s;
+	-moz-transition-duration: 0.6s;
+	-o-transition-duration: 0.6s;
+	-webkit-transition-duration: 0.6s;
+	transition-duration: 0.6s;
 	/*過渡效果所持續的時間*/
 	-moz-transition-timing-function: ease;
 	-o-transition-timing-function: ease;
@@ -123,4 +180,84 @@ header{
 	height: 100vh;
 	cursor: pointer;
 	z-index: 2;
+}
+#menu-list img{
+	width:30%;
+}
+#menu-list{
+	font-size: 1.5em;
+	padding:10px;
+}
+#menu-list li{
+	counter-increment: num_of_menu;
+	margin-top:15px;
+	cursor: pointer;
+}
+#menu-list li:hover{
+	font-size: 1.6em;
+	font-weight: bold;
+	color:#F00;
+}
+#menu-list li:before{
+	content:counter(num_of_menu);
+	margin-right: 10px;
+	font-size: 80%;
+ 	background-color: #2ecc71;
+ 	color: white;
+	font-weight: bold;
+	padding: 5px 8px;
+	border-radius: 3px;
+}
+#main{
+	padding-top: 80px;
+	padding-bottom: 80px;
+}
+a.noneA{
+	text-decoration:none;
+	color:maroon;
+}
+.commBox{
+	padding:10px;
+	margin-top:20px;
+	max-height: 600px;
+	overflow: hidden;
+	cursor:pointer;
+	background-color: #BBD1E9;
+	box-shadow: 3px 3px 15px black;
+}
+.commBox p.title{
+	font-size: 1.5em;
+	font-weight: bold;
+	text-shadow:1px 1px 0 white;
+}
+.commBox p.quote{
+	font-size: 1em;
+	max-height: 50px;
+	overflow: hidden;
+}
+.threadpostBox{
+	padding:10px;
+	margin-top:20px;
+}
+.threadpostBox p.title{
+	font-size: 1.2em;
+}
+.threadpostBox p.quote{
+	font-size: 1.5em;
+	font-weight: bold;
+	text-shadow:1px 1px 0 white;
+	color:maroon;
+}
+.replyBox{
+	padding:10px;
+	margin-top:10px;
+	background-color: #BBD1E9;
+}
+.replyBox p.title{
+	font-size: 1.2em;
+}
+.replyBox p.quote{
+	font-size: 1.5em;
+	font-weight: bold;
+	color:maroon;
 }
