@@ -1,0 +1,126 @@
+body{
+	font-family:微軟正黑體;
+	background-color: #EEDFF0;
+	background-image: url("../image/hjs93j06210.png");
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: right bottom;	
+}
+header{
+	position: fixed;
+	top:0;
+	height:50px;
+	width: 100vw;
+	font-size: 2em;
+	font-weight: bold;
+	text-align: center;
+	text-shadow:2px 2px 0 black;
+	color:white;
+	padding:5px;
+	background-color: maroon;
+	z-index: 1;
+}
+#menu-left{
+	position: fixed;
+	left:0px;
+	width: 300px;
+	height: 100vh;
+	overflow: auto;
+	z-index: 3;
+	-moz-transition-property: all;
+	-o-transition-property: all;
+	-webkit-transition-property: all;
+	transition-property: all;
+	/*當css width改變時會有過渡（一個狀態逐漸轉為另一個狀態）效果*/
+	-moz-transition-duration: 0.5s;
+	-o-transition-duration: 0.5s;
+	-webkit-transition-duration: 0.5s;
+	transition-duration: 0.5s;
+	/*過渡效果所持續的時間*/
+	-moz-transition-timing-function: ease;
+	-o-transition-timing-function: ease;
+	-webkit-transition-timing-function: ease;
+	transition-timing-function: ease;
+	/*過渡效果的動畫；ease是以低速開始->加速->結束前減速*/
+}
+#menu-left.menu-close{
+	left:-250px;
+}
+#menu-list{
+	width: 250px;
+	background: rgba(255,255,238,1);
+	height: 100%;
+}
+
+/*MENU ICON的部份*/
+#menu-icon{
+	position: absolute;
+	top:0;
+	right:0;
+	width:50px;
+	height:50px;
+	cursor: pointer;
+}
+#menu-icon span, #menu-icon:before, #menu-icon:after{
+    position: absolute;
+    left: 15px;
+	content:" ";
+	background-color: white;
+	width:30px;
+	height:4px;
+	-moz-transition-property: all;
+	-o-transition-property: all;
+	-webkit-transition-property: all;
+	transition-property: all;
+	/*當css width改變時會有過渡（一個狀態逐漸轉為另一個狀態）效果*/
+	-moz-transition-duration: 1s;
+	-o-transition-duration: 1s;
+	-webkit-transition-duration: 1s;
+	transition-duration: 1s;
+	/*過渡效果所持續的時間*/
+	-moz-transition-timing-function: ease;
+	-o-transition-timing-function: ease;
+	-webkit-transition-timing-function: ease;
+	transition-timing-function: ease;
+	/*過渡效果的動畫；ease是以低速開始->加速->結束前減速*/	
+}
+#menu-icon span{
+	top:23px;
+}
+#menu-icon:before{
+	top:13px;
+}
+#menu-icon:after{
+	top:33px;
+}
+#menu-icon.menu-icon-X span{
+	left:-50px;
+	opacity: 0;
+}
+#menu-icon.menu-icon-X:before{
+  -ms-transform: rotate(45deg) translate(5px,9px);
+  -moz-transform: rotateZ(45deg) translate(5px,9px);
+  -ms-transform:  rotateZ(45deg) translate(5px,9px);
+  -webkit-transform: rotateZ(45deg) translate(5px,9px);
+  transform: rotateZ(45deg) translate(5px,9px);
+  /*rotate是旋轉角度（以圖形中心旋轉）；translate則是旋轉後需要調整位置(x,y)*/
+}
+#menu-icon.menu-icon-X:after{
+  -ms-transform: rotate(-45deg) translate(5px,-9px);
+  -moz-transform: rotateZ(-45deg) translate(5px,-9px);
+  -ms-transform:  rotateZ(-45deg) translate(5px,-9px);
+  -webkit-transform: rotateZ(-45deg) translate(5px,-9px);
+  transform: rotateZ(-45deg) translate(5px,-9px);
+}
+
+/*打開MENU時給主區塊覆蓋上一層薄紗的感覺*/
+#menu-open-layer{
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color:rgba(0,0,0,0.7);
+	width: 100vw;
+	height: 100vh;
+	cursor: pointer;
+	z-index: 2;
+}

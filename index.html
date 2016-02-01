@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+		<!--width=device-width為適應各式裝置螢幕大小 initial-scale=1為初始比例-->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+		<!--X-UA-Compatible設置IE兼容模式；有什麼最新的版本IE，就用什麼版本的標準模式。-->
+		<meta name="description" content="一個自我滿足用的K島閱讀器(?)">
+		<title>K島閱讀器</title>
+
+		<link href="image/favicon.ico" rel="icon">
+		<link href="css/reset.css" rel="stylesheet"> <!--ResetCSS-->	
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/Animate.css" rel="stylesheet">
+		<link href="css/Komica_Reader.css" rel="stylesheet"><!--自己寫的css要最後一個讀取-->
+
+		<script src="js/jquery-2.2.0.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/jquery.xdomainajax.js"></script>
+		<script src="js/Komica_Reader.js"></script>
+	</head>
+	<body>
+		<header>
+			<span>粗乃丸❤</span>
+		</header>
+
+		<div id="menu-left" class="menu-close">
+			<div id="menu-list">
+				<a href="index.html" >
+					<img src="image/komicaLogo.jpg" class="img-responsive img-circle" alt="Komica_Logo" />
+				</a>
+				<ul>
+					<li name="http://2cat.or.tl/~tedc21thc/new/rss.xml">新番捏他</li>
+					<li name="http://2cat.or.tl/~tedc21thc/live/rss.xml">新番實況</li>
+					<!-- <li name="http://2cat.twbbs.org/~tedc21thc/anime/rss.xml">動畫</li>
+					<li id="showImg" ><hr/><span class="glyphicon glyphicon-picture"></span><br/>顯示本串全部圖片</li>
+					<li id="change"><hr/><span class="glyphicon glyphicon-repeat"></span> 更換配色風格</li> -->
+				</ul>
+			</div>
+			<div id="menu-icon">
+				<span></span>
+			</div>
+		</div>		
+
+		<div id="menu-open-layer" class="hide"></div>
+		<!-- 開啟MENU時覆蓋主區塊用的；hide為bootstrap提供的display:none -->
+
+		<div id="main" class="container">
+		</div>
+
+	</body>
+</html>
