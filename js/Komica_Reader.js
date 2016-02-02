@@ -34,7 +34,9 @@ $(function(){
 		$jumpImage.fadeOut(500, function(){
 			$jumpImage.find("img").attr("src","");
 		})
-		$body.css({"overflow":""});
+		if( $jumpImageS.is(":hidden") ){
+			$body.css({"overflow":""});		
+		}
 	});//end click
 
 	$("#showAllimg").on({
