@@ -125,18 +125,16 @@ $(function(){
 		
 
 		$.get( kanban_url , function(data){
-			var data_res = $(data.responseText);
-			var data_res_title = data_res[10]; //標頭的位置，含有標題；文章列表等
-			var data_res_form = data_res[12]; //發表文章表單的位置
-			var data_res_contents = data_res[14]; //主區塊
+			var $data_res = $(data.responseText);
+			var $data_res_form = $data_res.find("#postform"); //發表文章表單的位置
 
-			var kanban_title = $(data_res_title).find("h1").text();
+			var kanban_title = $data_res.find("h1").text();
 			$header_span.text(kanban_title); //改變header的文字
 
-			var listURL = $(data_res_title).find("[href*=threadlist]").attr("href");
+			var listURL = $data_res.find("[href*=threadlist]").attr("href");
 			kanban_list_url = kanban_url + listURL;//組合起來就是主題列表的網址；儲存起來
 
-			$(data_res_contents).find(".threadpost").each(function(i){
+			$data_res.find(".threadpost").each(function(i){
 				var $this = $(this);
 				var id = $this.attr("id"); //發文數字的ID
 				var imageSmall = $this.find("img").attr("src"); //縮圖的網址
@@ -184,19 +182,16 @@ $(function(){
 		imageSmall_col.length=0;
 
 		$.get( comm_url, function(data){
-			var data_res = $(data.responseText);
-			var data_res_form = data_res[12]; //發表文章表單的位置
-			var data_res_contents = data_res[14]; //主區塊
+			var $data_res = $(data.responseText);
+			var $data_res_form = $data_res.find("#postform");//發表文章表單的位置
 
-			$(data_res_contents).find("#threads > div").each(function(i){
+			$data_res.find("#threads > div").each(function(i){
 				var $this = $(this);
 				
 				if( $this.attr("class") === "threadpost"){ //代表是發文者
 					var comm_title = $this.find("span.title").text();//標題
 					$header_span.text(comm_title);
 
-					var name = $this.find("label").text();
-					name = name.slice( name.indexOf("[") );//發文時間與亂數ID
 					var id = $this.attr("id"); //發文數字ID
 					var imageSmall = $this.find("img").attr("src");//縮圖的網址
 					var imageBig = $this.find("img").parent("a").attr("href")//原圖的網址
@@ -204,7 +199,6 @@ $(function(){
 
 					komicaHTML += "<div class=\"row\">";
 					komicaHTML += "<div id=\""+ id +"\" class=\"col-sm-12 threadpostBox\">";
-					komicaHTML += "<p>"+ name +"</p>";
 					komicaHTML += "<p class=\"title\">【島民No. "+ id.replace("r","")+"】"+ comm_title +"</p>";
 					if( imageBig !== undefined){
 						komicaHTML += "<a class=\"comm-img\" href=\""+ imageBig +"\" target=\"_blank\">";
@@ -217,15 +211,12 @@ $(function(){
 
 				}else{
 					var id = $this.attr("id"); //發文數字ID
-					var comm_title = $this.find("span.title").text();//標題
-					var name = $this.find("label").html();
-					name = name.slice( name.indexOf("[") );//發文時間與亂數ID					
+					var comm_title = $this.find("span.title").text();//標題				
 					var imageSmall = $this.find("img").attr("src");//縮圖的網址
 					var imageBig = $this.find("img").parent("a").attr("href")//原圖的網址
 					var quote = $this.find(".quote").html(); //內文
 
 					komicaHTML += "<div id=\""+ id +"\" class=\"col-sm-10 replyBox\">";
-					komicaHTML += "<p>"+ name +"</p>";
 					komicaHTML += "<p class=\"title\">【島民No. "+ id.replace("r","")+"】"+ comm_title +"</p>";
 					if( imageBig !== undefined){
 						komicaHTML += "<a class=\"comm-img\" href=\""+ imageBig +"\" target=\"_blank\">";
