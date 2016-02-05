@@ -138,6 +138,9 @@ $(function(){
 				var $this = $(this);
 				var id = $this.attr("id"); //發文數字的ID
 				var imageSmall = $this.find("img").attr("src"); //縮圖的網址
+				if( imageSmall.indexOf("http") === -1 ){
+					imageSmall = imageSmall.replace("//","http://"); //如果開頭沒http，就補上去
+				}
 				var title = $this.find("span.title").text(); //發文的標題
 				var name = $this.find("label").text();
 				name = name.slice( name.indexOf("[") ); //發文的時間與亂數ID
@@ -201,6 +204,10 @@ $(function(){
 					komicaHTML += "<div id=\""+ id +"\" class=\"col-sm-12 threadpostBox\">";
 					komicaHTML += "<p class=\"title\">【島民No. "+ id.replace("r","")+"】"+ comm_title +"</p>";
 					if( imageBig !== undefined){
+						if( imageSmall.indexOf("http") === -1 ){
+							imageSmall = imageSmall.replace("//","http://");//如果開頭沒http，就補上去
+							imageBig = imageBig.replace("//","http://");
+						}
 						komicaHTML += "<a class=\"comm-img\" href=\""+ imageBig +"\" target=\"_blank\">";
 						komicaHTML += "<img src=\""+ imageSmall +"\" alt=\""+id+"的附圖\"/></a>";
 						imageBig_col.push( imageBig );//蒐集原圖網址
@@ -219,6 +226,10 @@ $(function(){
 					komicaHTML += "<div id=\""+ id +"\" class=\"col-sm-10 replyBox\">";
 					komicaHTML += "<p class=\"title\">【島民No. "+ id.replace("r","")+"】"+ comm_title +"</p>";
 					if( imageBig !== undefined){
+						if( imageSmall.indexOf("http") === -1 ){
+							imageSmall = imageSmall.replace("//","http://");//如果開頭沒http，就補上去
+							imageBig = imageBig.replace("//","http://");
+						}
 						komicaHTML += "<a class=\"comm-img\" href=\""+ imageBig +"\" target=\"_blank\">";
 						komicaHTML += "<img src=\""+ imageSmall +"\" alt=\""+id+"的附圖\"/></a>";
 						imageBig_col.push( imageBig );//蒐集原圖網址
@@ -269,15 +280,13 @@ $(function(){
 
 	function getList(data, kanban_url){
 		var komicaHTML = "";
-		var data_res = $(data.responseText)
-		var data_res_title = data_res[10]; //標頭的位置，含有標題；文章列表等
-		var data_res_contents = data_res[12];//主區塊
+		var $data_res = $(data.responseText);
 
-		var kanban_title = $(data_res_title).find("h1").text();
+		var kanban_title = $data_res.find("h1").text();
 		$header_span.text(kanban_title); //改變header的文字
 
 		var temp;
-		$(data_res_contents).find("table:eq(0) tr").each(function(i){
+		$data_res.find("table:eq(0) tr").each(function(i){
 			var $this = $(this);
 			if(i){//跳過第一個 因為那只是表格標題
 				var this_td = $this.find("td");
