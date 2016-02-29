@@ -1,5 +1,6 @@
 $(function(){
 	var $window = $(window);
+	var $document = $(document);
 	var $body = $("body");
 	var $main = $("#main");
 	var $jumpImage = $("#jumpImage");
@@ -7,6 +8,7 @@ $(function(){
 	var $header_span = $("header span");
 	var $downSpan = $("#downBtn span");
 	var $upSpan = $("#upBtn span");
+	var $loader = $(".loader");
 	var kanban_list_url;//儲存目前所在看板的主題列表
 	var imageBig_col = new Array(); //蒐集原圖用的陣列
 	var imageSmall_col = new Array(); //蒐集縮圖用的陣列
@@ -85,6 +87,13 @@ $(function(){
     // $(window).bind("popstate", function (){
     // 	$main.text("").append( history.state );
     // });
+
+	$document.ajaxStart(function(){
+		$loader.fadeIn(500);//在資料還沒傳回來之前，先在網頁上顯示"讀取中..."的圖案
+	});
+	$document.ajaxStop(function(){
+		$loader.fadeOut(500);
+	});
 
 
 	function openMenuLeft(){ //開關MENU-LEFT
